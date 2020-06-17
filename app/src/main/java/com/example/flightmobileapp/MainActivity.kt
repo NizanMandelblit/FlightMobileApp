@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         ConnectButton.setOnClickListener() {
-            val database = getSharedPreferences("datebase", Context.MODE_PRIVATE)
+            val database = getSharedPreferences("database", Context.MODE_PRIVATE)
             database.edit().apply() {
                 putString("url", UrlInput.text.toString())
 
