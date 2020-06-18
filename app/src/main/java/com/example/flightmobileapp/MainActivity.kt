@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
-import com.example.flightmobileapp.UrlDatabase.Companion
+//import com.example.flightmobileapp.UrlDatabase.Companion
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,11 +21,8 @@ class MainActivity : AppCompatActivity() {
             button.setOnClickListener() {
                 UrlInput.setText(database.getString("url", "no value"))
             }
-            //Urls1.get(application)
         }
-        //print("HELLO TRYING TO PRINT")
-        //Log.d("PRINT", "Printing this message")
-        //UrlDatabase.get(application)
+        UrlDatabase.get(application)
 
 
     }

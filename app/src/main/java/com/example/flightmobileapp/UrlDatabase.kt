@@ -1,7 +1,7 @@
 package com.example.flightmobileapp
 
 import android.app.Application
-import android.content.Context
+//import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -10,6 +10,11 @@ import androidx.room.RoomDatabase
 abstract class UrlDatabase : RoomDatabase() {
     //var a=get (application)
     companion object {
+        fun get(application: Application): UrlDatabase {
+            return Room.databaseBuilder(application, UrlDatabase::class.java, "urlDataBase")
+                .build()
+        }
+        /*
         @Volatile
         private var instance: UrlDatabase? = null
         fun getInstance(context: Context): UrlDatabase {
@@ -32,15 +37,7 @@ abstract class UrlDatabase : RoomDatabase() {
             )
                 .fallbackToDestructiveMigration().build()
         }
-
-        fun get2(application: Application): UrlDatabase {
-            return Room.databaseBuilder(
-                application,
-                UrlDatabase::class.java,
-                "urlDataBase"
-            )
-                .fallbackToDestructiveMigration().build()
-        }
+        */
     }
 
 }
