@@ -15,6 +15,8 @@ class Second : AppCompatActivity() {
         val savedUrl = prefrences.getString("url", "This value doesn't exist")
         viewUrl.text = "URL:" + savedUrl
 
+
+
         seekBar1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 num1.text = progress.toString()
@@ -43,6 +45,8 @@ class Second : AppCompatActivity() {
             }
         })
 
+
+/*
         seekBar3.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 num3.text = progress.toString()
@@ -71,6 +75,6 @@ class Second : AppCompatActivity() {
             }
         })
 
-
+*/
     }
 }
