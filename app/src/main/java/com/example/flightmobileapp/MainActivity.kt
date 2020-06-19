@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+SleepDatabase.getInstance(application)
 
     }
 }
