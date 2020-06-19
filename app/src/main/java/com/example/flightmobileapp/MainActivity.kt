@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         //Log.d("PRINT", "Printing this message")
         //UrlDatabase.get(application)
 
+        SleepDatabase.getInstance(application)
 
     }
 }

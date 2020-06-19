@@ -8,14 +8,13 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="412dp"
-        android:layout_height="258dp"
+        android:layout_width="400dp"
+        android:layout_height="396dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.007"
         app:srcCompat="@android:mipmap/sym_def_app_icon" />
 
     <TextView
@@ -28,25 +27,55 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <SeekBar
-        android:id="@+id/seekBar2"
-        android:layout_width="222dp"
-        android:layout_height="37dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/seekBar4"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/num2"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar3" />
+
+    <SeekBar
+        android:id="@+id/seekBar3"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
+
+    <SeekBar
+        android:id="@+id/seekBar2"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/seekBar1" />
 
     <SeekBar
         android:id="@+id/seekBar1"
-        android:layout_width="69dp"
-        android:layout_height="178dp"
-        android:rotation="270"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="300dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="438dp"
+        android:layout_marginBottom="129dp"
+        app:layout_constraintBottom_toTopOf="@+id/joystickView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.184"
-        app:layout_constraintStart_toEndOf="@+id/num1"
-        app:layout_constraintTop_toBottomOf="@+id/viewUrl"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/num4"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="#4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/num3" />
+
+    <TextView
+        android:id="@+id/num3"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:text="#3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/num2" />
 
     <TextView
         android:id="@+id/num2"
@@ -55,12 +84,8 @@
         android:ems="10"
         android:inputType="numberDecimal"
         android:text="#2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/seekBar1"
-        app:layout_constraintHorizontal_bias="0.352"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar1"
-        app:layout_constraintVertical_bias="0.52" />
+        app:layout_constraintTop_toBottomOf="@+id/num1" />
 
     <TextView
         android:id="@+id/num1"
@@ -69,11 +94,16 @@
         android:ems="10"
         android:inputType="numberDecimal"
         android:text="#1"
-        app:layout_constraintBottom_toTopOf="@+id/seekBar2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.381"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewUrl" />
 
 
+    <com.example.flightmobileapp.JoystickView
+        android:id="@+id/joystickView"
+        android:layout_width="191dp"
+        android:layout_height="191dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar1"></com.example.flightmobileapp.JoystickView>
 </androidx.constraintlayout.widget.ConstraintLayout>
