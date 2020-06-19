@@ -1,15 +1,20 @@
 package com.example.flightmobileapp
 
+import android.R.layout
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.SeekBar
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_second.*
 
-class Second : AppCompatActivity() {
+
+class Second : AppCompatActivity() ,JoystickView.JoystickListener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_second)
+        val joystick = JoystickView(this)
 
         val prefrences = getSharedPreferences("database", Context.MODE_PRIVATE)
         val savedUrl = prefrences.getString("url", "This value doesn't exist")
@@ -21,7 +26,7 @@ class Second : AppCompatActivity() {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
-                num1.text =  seekBar.progress.toString()
+                num1.text = seekBar.progress.toString()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
@@ -35,7 +40,7 @@ class Second : AppCompatActivity() {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
-                num2.text =  seekBar.progress.toString()
+                num2.text = seekBar.progress.toString()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
@@ -49,7 +54,7 @@ class Second : AppCompatActivity() {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
-                num3.text =  seekBar.progress.toString()
+                num3.text = seekBar.progress.toString()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
@@ -63,7 +68,7 @@ class Second : AppCompatActivity() {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
-                num4.text =  seekBar.progress.toString()
+                num4.text = seekBar.progress.toString()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
@@ -72,5 +77,14 @@ class Second : AppCompatActivity() {
         })
 
 
+    }
+
+    override fun onJoystickMoved(xPercent: Float, yPercent: Float, id: Int) {
+        when (id) {
+            R.id.joystickView -> Log.d(
+                "Right Joystick",
+                "X percent: $xPercent Y percent: $yPercent"
+            )
+        }
     }
 }

@@ -50,9 +50,12 @@
     <SeekBar
         android:id="@+id/seekBar1"
         android:layout_width="300dp"
-        android:layout_height="40dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="438dp"
+        android:layout_marginBottom="129dp"
+        app:layout_constraintBottom_toTopOf="@+id/joystickView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewUrl" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/num4"
@@ -94,4 +97,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewUrl" />
 
+
+    <com.example.flightmobileapp.JoystickView
+        android:id="@+id/joystickView"
+        android:layout_width="191dp"
+        android:layout_height="191dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar1"></com.example.flightmobileapp.JoystickView>
 </androidx.constraintlayout.widget.ConstraintLayout>
