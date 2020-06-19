@@ -2,6 +2,7 @@ package com.example.flightmobileapp
 
 import android.R.layout
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.SeekBar
@@ -9,13 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_second.*
 
 
-class Second : AppCompatActivity() ,JoystickView.JoystickListener{
+class Second : AppCompatActivity(), JoystickView.JoystickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_second)
         val joystick = JoystickView(this)
-
         val prefrences = getSharedPreferences("database", Context.MODE_PRIVATE)
         val savedUrl = prefrences.getString("url", "This value doesn't exist")
         viewUrl.text = "URL:" + savedUrl
