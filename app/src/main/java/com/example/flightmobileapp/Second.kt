@@ -1,6 +1,5 @@
 package com.example.flightmobileapp
 
-import android.R.layout
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_second.*
 
 
-class Second : AppCompatActivity() ,JoystickView.JoystickListener{
+class Second : AppCompatActivity(), JoystickView.JoystickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -24,32 +23,31 @@ class Second : AppCompatActivity() ,JoystickView.JoystickListener{
 
         seekBar1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                num1.text = progress.toString()
+                throttleNum.text = progress.toString()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
-                num1.text = seekBar.progress.toString()
+                throttleNum.text = seekBar.progress.toString()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                num1.text = seekBar.progress.toString()
+                throttleNum.text = seekBar.progress.toString()
             }
         })
 
         seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                num2.text = progress.toString()
+                rudderNum.text = progress.toString()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
-                num2.text = seekBar.progress.toString()
+                rudderNum.text = seekBar.progress.toString()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                num2.text = seekBar.progress.toString()
+                rudderNum.text = seekBar.progress.toString()
             }
         })
-
 
 /*
         seekBar3.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -90,5 +88,8 @@ class Second : AppCompatActivity() ,JoystickView.JoystickListener{
                 "X percent: $xPercent Y percent: $yPercent"
             )
         }
+        aileronNum.text = xPercent.toString()
+        elevatorNum.text = yPercent.toString()
+
     }
 }
