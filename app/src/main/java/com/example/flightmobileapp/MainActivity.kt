@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
             val database = getSharedPreferences("datebase", Context.MODE_PRIVATE)
             database.edit().apply() {
                 putString("url", UrlInput.text.toString())
+                    //LocalHost(url)
             }.apply()
 
             button.setOnClickListener() {
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         UrlDatabase.get(application)
+
 
 
     }
