@@ -49,10 +49,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 myActualList.add(0,localhost)
                 my_urls_data=myActualList
-                insertData(localhost, application).execute()
-                //Toast.makeText(this, "Connecting...", Toast.LENGTH_SHORT).show()
-                //val second = Intent(this, Second::class.java)
-                //startActivity(second)
+                Toast.makeText(this, "Connecting...", Toast.LENGTH_SHORT).show()
+                val second = Intent(this, Second::class.java)
+                startActivity(second)
 
             }
         }
