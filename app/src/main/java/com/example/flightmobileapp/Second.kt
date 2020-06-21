@@ -1,6 +1,7 @@
 package com.example.flightmobileapp
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.SeekBar
@@ -14,7 +15,6 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
 
         setContentView(R.layout.activity_second)
         val joystick = JoystickView(this)
-
         val prefrences = getSharedPreferences("database", Context.MODE_PRIVATE)
         val savedUrl = prefrences.getString("url", "This value doesn't exist")
         viewUrl.text = "URL:" + savedUrl
