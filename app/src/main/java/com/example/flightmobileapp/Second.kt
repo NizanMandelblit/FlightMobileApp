@@ -1,6 +1,5 @@
 package com.example.flightmobileapp
 
-import android.R.layout
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -20,34 +19,37 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
         val savedUrl = prefrences.getString("url", "This value doesn't exist")
         viewUrl.text = "URL:" + savedUrl
 
+
+
         seekBar1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                num1.text = progress.toString()
+                throttleNum.text = progress.toString()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
-                num1.text = seekBar.progress.toString()
+                throttleNum.text = seekBar.progress.toString()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                num1.text = seekBar.progress.toString()
+                throttleNum.text = seekBar.progress.toString()
             }
         })
 
         seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                num2.text = progress.toString()
+                rudderNum.text = progress.toString()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
-                num2.text = seekBar.progress.toString()
+                rudderNum.text = seekBar.progress.toString()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                num2.text = seekBar.progress.toString()
+                rudderNum.text = seekBar.progress.toString()
             }
         })
 
+/*
         seekBar3.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 num3.text = progress.toString()
@@ -76,7 +78,7 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
             }
         })
 
-
+*/
     }
 
     override fun onJoystickMoved(xPercent: Float, yPercent: Float, id: Int) {
@@ -86,5 +88,8 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
                 "X percent: $xPercent Y percent: $yPercent"
             )
         }
+        aileronNum.text = xPercent.toString()
+        elevatorNum.text = yPercent.toString()
+
     }
 }
