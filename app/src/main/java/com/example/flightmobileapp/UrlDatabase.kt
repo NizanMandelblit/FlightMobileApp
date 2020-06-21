@@ -54,7 +54,7 @@ abstract class UrlDatabase : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         UrlDatabase::class.java,
-                        "url_database").allowMainThreadQueries()
+                        "url_database")
                         .fallbackToDestructiveMigration().build()
                 }
                 INSTANCE = instance
