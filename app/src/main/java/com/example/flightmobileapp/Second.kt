@@ -1,11 +1,14 @@
 package com.example.flightmobileapp
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_second.*
 
 
@@ -14,12 +17,17 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_second)
+        val model: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
+
         val joystick = JoystickView(this)
         val prefrences = getSharedPreferences("database", Context.MODE_PRIVATE)
         val savedUrl = prefrences.getString("url", "This value doesn't exist")
         viewUrl.text = "URL:" + savedUrl
 
-
+        model.screenshot?.observe(this, Observer<Bitmap> { newval ->
+            imageView.setImageBitmap(newval)
+        })
+        model.getscreenshot()
 
         seekBar1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -88,8 +96,8 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
                 "X percent: $xPercent Y percent: $yPercent"
             )
         }
-        aileronNum.text = xPercent.toString()
-        elevatorNum.text = yPercent.toString()
+        //aileronNum.text = xPercent.toString()
+        //elevatorNum.text = yPercent.toString()
 
     }
 }

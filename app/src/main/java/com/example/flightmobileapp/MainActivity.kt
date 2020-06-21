@@ -28,32 +28,34 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Connecting...", Toast.LENGTH_SHORT).show()
                 val second = Intent(this, Second::class.java)
                 startActivity(second)
-                val listUrls = UrlDatabase.get(application).getDao2().getLast5()
-                button.setOnClickListener() {
-                    if (listUrls.size >= 1) {
-                        UrlInput.setText(listUrls[0].urlAdress)
-                    }
-                }
-                button2.setOnClickListener() {
-                    if (listUrls.size >= 2) {
-                        UrlInput.setText(listUrls[1].urlAdress)
-                    }
-                }
-                button3.setOnClickListener() {
-                    if (listUrls.size >= 3) {
-                        UrlInput.setText(listUrls[2].urlAdress)
-                    }
-                }
-                button4.setOnClickListener() {
-                    if (listUrls.size >= 4) {
-                        UrlInput.setText(listUrls[3].urlAdress)
-                    }
-                }
-                button5.setOnClickListener() {
-                    if (listUrls.size == 5) {
-                        UrlInput.setText(listUrls[4].urlAdress)
-                    }
-                }
+
+            }
+        }
+
+        val listUrls = UrlDatabase.get(application).getDao2().getLast5()
+        button.setOnClickListener() {
+            if (listUrls.size >= 1) {
+                UrlInput.setText(listUrls[0].urlAdress)
+            }
+        }
+        button2.setOnClickListener() {
+            if (listUrls.size >= 2) {
+                UrlInput.setText(listUrls[1].urlAdress)
+            }
+        }
+        button3.setOnClickListener() {
+            if (listUrls.size >= 3) {
+                UrlInput.setText(listUrls[2].urlAdress)
+            }
+        }
+        button4.setOnClickListener() {
+            if (listUrls.size >= 4) {
+                UrlInput.setText(listUrls[3].urlAdress)
+            }
+        }
+        button5.setOnClickListener() {
+            if (listUrls.size == 5) {
+                UrlInput.setText(listUrls[4].urlAdress)
             }
         }
 
