@@ -12,7 +12,7 @@ abstract class UrlDatabase : RoomDatabase() {
     companion object {
         fun get(application: Application): UrlDatabase {
             return Room.databaseBuilder(application, UrlDatabase::class.java, "urlDataBase")
-                .build()
+                .allowMainThreadQueries().build()
         }
         /*
         @Volatile
@@ -39,5 +39,8 @@ abstract class UrlDatabase : RoomDatabase() {
         }
         */
     }
+
+    abstract fun getDao2(): Functions
+
 
 }

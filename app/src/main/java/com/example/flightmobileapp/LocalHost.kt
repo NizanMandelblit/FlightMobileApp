@@ -8,4 +8,5 @@ data class LocalHost (
     @PrimaryKey val urlAdress: String,
     @ColumnInfo(name = "start_time")
     val startTime: Long = System.currentTimeMillis()
+
 )

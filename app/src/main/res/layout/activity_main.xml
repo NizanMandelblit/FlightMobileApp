@@ -86,6 +86,7 @@
         android:layout_width="211dp"
         android:layout_height="42dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="194dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="156dp"
         android:ems="10"
@@ -94,20 +95,24 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ConnectButton"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button5" />
 
     <Button
         android:id="@+id/ConnectButton"
         android:layout_width="133dp"
         android:layout_height="47dp"
         android:layout_marginStart="45dp"
+        android:layout_marginTop="194dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="156dp"
         android:backgroundTint="#03A9F4"
         android:text="Connect"
         android:textStyle="bold|italic"
-        app:layout_constraintBaseline_toBaselineOf="@+id/UrlInput"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.11"
-        app:layout_constraintStart_toEndOf="@+id/UrlInput" />
+        app:layout_constraintStart_toEndOf="@+id/UrlInput"
+        app:layout_constraintTop_toBottomOf="@+id/button5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

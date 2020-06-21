@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.SyncStateContract.Helpers.insert
 import android.webkit.URLUtil
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,21 +19,37 @@ class MainActivity : AppCompatActivity() {
             val database = getSharedPreferences("database", Context.MODE_PRIVATE)
             database.edit().apply() {
                 putString("url", UrlInput.text.toString())
-                    //LocalHost(url)
             }.apply()
             if (UrlInput.text.length == 0) {
                 Toast.makeText(this, "You Must Fill in A valid URL", Toast.LENGTH_SHORT).show()
             } else {
+                val localhost = LocalHost(UrlInput.text.toString())
+                UrlDatabase.get(application).getDao2().insert(localhost)
                 Toast.makeText(this, "Connecting...", Toast.LENGTH_SHORT).show()
                 val second = Intent(this, Second::class.java)
                 startActivity(second)
+                val listUrls = UrlDatabase.get(application).getDao2().getLast5()
                 button.setOnClickListener() {
-                    UrlInput.setText(database.getString("url", "no value"))
+                    UrlInput.setText(listUrls[0].urlAdress)
+                }
+                button2.setOnClickListener() {
+                    UrlInput.setText(listUrls[1].urlAdress)
+
+                }
+                button3.setOnClickListener() {
+                    UrlInput.setText(listUrls[2].urlAdress)
+
+                }
+                button4.setOnClickListener() {
+                    UrlInput.setText(listUrls[3].urlAdress)
+
+                }
+                button5.setOnClickListener() {
+                    UrlInput.setText(listUrls[4].urlAdress)
+
                 }
             }
         }
-        UrlDatabase.get(application)
-
 
 
     }
