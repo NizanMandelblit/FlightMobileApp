@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
             val database = getSharedPreferences("database", Context.MODE_PRIVATE)
             database.edit().apply() {
                 putString("url", UrlInput.text.toString())
-
+                    //LocalHost(url)
             }.apply()
             if (UrlInput.text.length == 0) {
                 Toast.makeText(this, "You Must Fill in A valid URL", Toast.LENGTH_SHORT).show()
@@ -31,8 +31,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        UrlDatabase.get(application)
 
-        SleepDatabase.getInstance(application)
+
 
     }
 }
