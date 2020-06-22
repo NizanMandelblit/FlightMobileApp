@@ -28,7 +28,9 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
         model.screenshot?.observe(this, Observer<Bitmap> { newval ->
             imageView.setImageBitmap(newval)
         })
-        //model.getscreenshot()
+        //model.my_url = savedUrl!!
+        model.my_url = "http://10.0.2.2:5000/"
+        model.getscreenshot()
 
         seekBar1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -70,8 +72,8 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
         }
 
 
-        //model._aileron = xPercent
-        //model._elevator = yPercent
+        model._aileron = xPercent
+        model._elevator = yPercent
         //aileronNum.text = xPercent.toString()
         //elevatorNum.text = yPercent.toString()
 

@@ -17,9 +17,10 @@ import retrofit2.http.POST
 
 object RetrofitObj {
     private val client = OkHttpClient.Builder().build()
+    var my_url:String? = null
     private fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:5000/")
+            .baseUrl(my_url)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

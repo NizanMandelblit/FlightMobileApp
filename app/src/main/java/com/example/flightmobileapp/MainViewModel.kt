@@ -18,6 +18,14 @@ class MainViewModel: ViewModel() {
     @Volatile private var joystickModel:JoystickModel? = null
     private val lock = ReentrantLock()
     @Volatile private var there_is_new_val:Boolean = false
+    @Volatile var my_url:String = ""
+    @Volatile var _my_url:String? =null
+    set(value) {
+        RetrofitObj.my_url = value
+        my_url = value!!
+        field = value
+    }
+
 
 
     private var throttle:Float = 0.0F
@@ -111,6 +119,7 @@ class MainViewModel: ViewModel() {
 
     }
     fun getscreenshot() {
+
         viewModelScope.launch(Dispatchers.Main) {
             while (true) {
                setBitmapFrom(screenshot)
@@ -126,6 +135,7 @@ class MainViewModel: ViewModel() {
     suspend fun sendValusTosim() {
         return withContext(Dispatchers.IO) {
             //Log.d("TAG", elevator.toString())
+            RetrofitObj.my_url = my_url
 
             RetrofitObj.sendValsToSim(joystickModel)
         }
@@ -133,6 +143,7 @@ class MainViewModel: ViewModel() {
     suspend fun setBitmapFrom(mm:MutableLiveData<Bitmap>)  {
 
         return withContext(Dispatchers.IO) {
+            RetrofitObj.my_url = my_url
 
             RetrofitObj.getBitmapFrom(mm) {
                 val bitmap: Bitmap
