@@ -30,12 +30,15 @@ object RetrofitObj {
         fun getImageData(): Call<ResponseBody>
         @Headers("Content-Type: application/json")
         @POST("/api/command")
-        fun sendSteeringData(@Body joystickModel: JoystickModel): Call<ResponseBody>
+        fun sendSteeringData(@Body joystickModel: JoystickModel?): Call<ResponseBody>
     }
 
     private val api : API by lazy  { provideRetrofit().create(API::class.java) }
 
+    fun sendValsToSim(joystickModel: JoystickModel?) {
+        val response = api.sendSteeringData(joystickModel!!).execute()
 
+    }
     fun getBitmapFrom(mb: MutableLiveData<Bitmap>, onComplete: (Bitmap?) -> Bitmap)  {
 
         api.getImageData().enqueue(object : retrofit2.Callback<ResponseBody> {
