@@ -49,22 +49,19 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
                     (round(getConvertedValue(seekBar.progress) * 100) / 100).toString()
             }
         })
-        val step = 1
-        val max = 100
-        val min = -100
-        rudderSeekBar.setMax((max - min) / step);
+        rudderSeekBar.max = 200;
         // rudder seek bar  movement
         rudderSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                rudderNum.text = getConvertedValue(min + progress * step).toString()
+                rudderNum.text = getConvertedValue(-100 + progress).toString()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
-                rudderNum.text = getConvertedValue(min + seekBar.progress * step).toString()
+                rudderNum.text = getConvertedValue(-100 + seekBar.progress).toString()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                rudderNum.text = getConvertedValue(min + seekBar.progress * step).toString()
+                rudderNum.text = getConvertedValue(-100 + seekBar.progress).toString()
             }
         })
     }
@@ -81,6 +78,7 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
         elevatorNum.text = (round(yPercent * 100) / 100).toString()
 
     }
+
     // convert number to float in range
     fun getConvertedValue(intVal: Int): Float {
         var floatVal = 0.0f
