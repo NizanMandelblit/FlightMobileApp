@@ -14,6 +14,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import java.util.concurrent.TimeoutException
 
 object RetrofitObj {
     private val client = OkHttpClient.Builder().build()
@@ -37,7 +38,12 @@ object RetrofitObj {
     private val api : API by lazy  { provideRetrofit().create(API::class.java) }
 
     fun sendValsToSim(joystickModel: JoystickModel?) {
-        val response = api.sendSteeringData(joystickModel!!).execute()
+        try {
+            val response = api.sendSteeringData(joystickModel!!).execute()
+
+        } catch (e:TimeoutException) {
+
+        }
 
     }
     fun getBitmapFrom(mb: MutableLiveData<Bitmap>, onComplete: (Bitmap?) -> Bitmap)  {
@@ -63,6 +69,18 @@ object RetrofitObj {
                 )
             }
         })
+    }
+    fun tryGetImage() : Boolean{
+
+        try {
+            val response = api.getImageData().execute()
+            if (response == null || !response.isSuccessful || response.body() == null || response.errorBody() != null) {
+                return false
+            }
+            return true
+        } catch (e:TimeoutException) {
+            return false
+        }
 
 
     }
