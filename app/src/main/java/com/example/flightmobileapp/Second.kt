@@ -2,19 +2,20 @@ package com.example.flightmobileapp
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.SeekBar
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_second.*
 import kotlin.math.round
-import kotlin.math.roundToInt
 
 
 class Second : AppCompatActivity(), JoystickView.JoystickListener {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,32 +32,39 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
         })
         model.getscreenshot()
         // throttle seek bar  movement
-        seekBar1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+
+        throttleSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                throttleNum.text = progress.toString()
+                throttleNum.text =
+                    (round(getConvertedValue(seekBar.progress) * 100) / 100).toString()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
-                throttleNum.text = seekBar.progress.toString()
+                throttleNum.text =
+                    (round(getConvertedValue(seekBar.progress) * 100) / 100).toString()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                throttleNum.text = seekBar.progress.toString()
+                throttleNum.text =
+                    (round(getConvertedValue(seekBar.progress) * 100) / 100).toString()
             }
         })
-
+        val step = 1
+        val max = 100
+        val min = -100
+        rudderSeekBar.setMax((max - min) / step);
         // rudder seek bar  movement
-        seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        rudderSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                rudderNum.text = progress.toString()
+                rudderNum.text = getConvertedValue(min + progress * step).toString()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
-                rudderNum.text = seekBar.progress.toString()
+                rudderNum.text = getConvertedValue(min + seekBar.progress * step).toString()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                rudderNum.text = seekBar.progress.toString()
+                rudderNum.text = getConvertedValue(min + seekBar.progress * step).toString()
             }
         })
     }
@@ -69,8 +77,14 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
                 "X percent: $xPercent Y percent: $yPercent"
             )
         }
-        aileronNum.text = xPercent.toString()
-        elevatorNum.text = round(yPercent).toString()
+        aileronNum.text = (round(xPercent * 100) / 100).toString()
+        elevatorNum.text = (round(yPercent * 100) / 100).toString()
 
+    }
+    // convert number to float in range
+    fun getConvertedValue(intVal: Int): Float {
+        var floatVal = 0.0f
+        floatVal = .01f * intVal
+        return floatVal
     }
 }
