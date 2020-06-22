@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_second.*
+import kotlin.math.round
+import kotlin.math.roundToInt
 
 
 class Second : AppCompatActivity(), JoystickView.JoystickListener {
@@ -58,6 +60,7 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
             }
         })
     }
+
     //Joystick movement
     override fun onJoystickMoved(xPercent: Float, yPercent: Float, id: Int) {
         when (id) {
@@ -67,7 +70,7 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
             )
         }
         aileronNum.text = xPercent.toString()
-        elevatorNum.text = yPercent.toString()
+        elevatorNum.text = round(yPercent).toString()
 
     }
 }
