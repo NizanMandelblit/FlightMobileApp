@@ -86,3 +86,4 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
         return floatVal
     }
 }
+//hello
