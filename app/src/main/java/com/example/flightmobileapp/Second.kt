@@ -28,7 +28,7 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
             imageView.setImageBitmap(newval)
         })
         model.getscreenshot()
-
+        // throttle seek bar  movement
         seekBar1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 throttleNum.text = progress.toString()
@@ -43,6 +43,7 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
             }
         })
 
+        // rudder seek bar  movement
         seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 rudderNum.text = progress.toString()
@@ -56,39 +57,8 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
                 rudderNum.text = seekBar.progress.toString()
             }
         })
-
-/*
-        seekBar3.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                num3.text = progress.toString()
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
-                num3.text = seekBar.progress.toString()
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                num3.text = seekBar.progress.toString()
-            }
-        })
-
-        seekBar4.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                num4.text = progress.toString()
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
-                num4.text = seekBar.progress.toString()
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                num4.text = seekBar.progress.toString()
-            }
-        })
-
-*/
     }
-
+    //Joystick movement
     override fun onJoystickMoved(xPercent: Float, yPercent: Float, id: Int) {
         when (id) {
             R.id.joystickView -> Log.d(
@@ -96,8 +66,8 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
                 "X percent: $xPercent Y percent: $yPercent"
             )
         }
-        //aileronNum.text = xPercent.toString()
-        //elevatorNum.text = yPercent.toString()
+        aileronNum.text = xPercent.toString()
+        elevatorNum.text = yPercent.toString()
 
     }
 }
