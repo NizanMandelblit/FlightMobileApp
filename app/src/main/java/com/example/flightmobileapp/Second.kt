@@ -98,6 +98,6 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
         var floatVal = 0.0f
         floatVal = .01f * intVal
         return floatVal
+        val i=0
     }
 }
-//hello
