@@ -40,12 +40,14 @@ class MainActivity : AppCompatActivity() {
             } else {
                 val localhost = LocalHost(UrlInput.text.toString())
                 var myActualList=my_urls_data!!.toMutableList()
-                val temp1=myActualList.get(4)
-                myActualList.remove(temp1)
-                for(x in 0 until 4){
-                    val temp=myActualList.get(3)
-                    myActualList.remove(temp)
-                    myActualList.add(0,temp)
+                if (myActualList.size>4) {
+                    val temp1 = myActualList.get(4)
+                    myActualList.remove(temp1)
+                    for (x in 0 until 4) {
+                        val temp = myActualList.get(3)
+                        myActualList.remove(temp)
+                        myActualList.add(0, temp)
+                    }
                 }
                 myActualList.add(0,localhost)
                 my_urls_data=myActualList
