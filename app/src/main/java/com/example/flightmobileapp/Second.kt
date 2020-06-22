@@ -15,7 +15,10 @@ import kotlin.math.round
 
 
 class Second : AppCompatActivity(), JoystickView.JoystickListener {
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private lateinit var model: MainViewModel
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,7 +37,7 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
         model.my_url = "http://10.0.2.2:5000/"
         model.getscreenshot()
 
-        seekBar1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 throttleNum.text =
                     (round(getConvertedValue(seekBar.progress) * 100) / 100).toString()
@@ -51,7 +54,6 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
             }
         })
 
-        seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
         rudderSeekBar.max = 200;
         // rudder seek bar  movement
         rudderSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
