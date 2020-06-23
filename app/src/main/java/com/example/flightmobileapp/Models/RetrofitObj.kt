@@ -3,6 +3,7 @@ package com.example.flightmobileapp.Models
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -14,12 +15,16 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
+import kotlinx.android.synthetic.main.activity_second.*
+import java.net.SocketTimeoutException
+
 
 object RetrofitObj {
-    private val client = OkHttpClient.Builder().build()
-    var my_url:String? = null
-    private fun provideRetrofit(): Retrofit {
+    private val client = OkHttpClient.Builder().connectTimeout(5, TimeUnit.SECONDS).build()
+    //@Volatile var my_url:String? = null
+    private fun provideRetrofit(my_url:String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(my_url)
             .addConverterFactory(GsonConverterFactory.create())
@@ -35,27 +40,67 @@ object RetrofitObj {
         fun sendSteeringData(@Body joystickModel: JoystickModel?): Call<ResponseBody>
     }
 
-    private val api : API by lazy  { provideRetrofit().create(API::class.java) }
+   // private val api : API by lazy  { provideRetrofit().create(API::class.java) }
 
-    fun sendValsToSim(joystickModel: JoystickModel?) {
-        try {
+    fun sendValsToSim(joystickModel: JoystickModel?, message:MutableLiveData<String>, my_url:String)  {
+
+        val api : API by lazy  { provideRetrofit(my_url).create(API::class.java) }
             val response = api.sendSteeringData(joystickModel!!).execute()
-
-        } catch (e:TimeoutException) {
-
+        if (!response.isSuccessful || response.errorBody() != null) {
+            message.postValue("unable to send values to server")
+            return
         }
 
-    }
-    fun getBitmapFrom(mb: MutableLiveData<Bitmap>, onComplete: (Bitmap?) -> Bitmap)  {
+            return
 
-        api.getImageData().enqueue(object : retrofit2.Callback<ResponseBody> {
 
+         /*
+        api.sendSteeringData(joystickModel).enqueue(object : retrofit2.Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
-
+                message.value = "failed to connect to server when tried to send values"
             }
 
             override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
                 if (response == null || !response.isSuccessful || response.body() == null || response.errorBody() != null) {
+                    Log.d("TAG","unable to send values to server")
+
+                    message.value = "unable to send values to server"
+                    return
+                }
+                message.value = "sent"
+            }
+        })
+
+          */
+
+    }
+    fun getBitmapFrom(mb: MutableLiveData<Bitmap>, message:MutableLiveData<String>, my_url:String, onComplete: (Bitmap?) -> Bitmap)  {
+        val api : API by lazy  { provideRetrofit(my_url).create(API::class.java) }
+        val response =  api.getImageData().execute()
+        if (response == null || !response.isSuccessful || response.body() == null || response.errorBody() != null) {
+            message.postValue("unable to get images from server")
+            return
+        }
+        val bytes = response?.body()!!.bytes()
+        mb.postValue(onComplete(
+            BitmapFactory.decodeByteArray(
+                bytes,
+                0,
+                bytes.size
+            )
+        ))
+
+
+/*
+        api.getImageData().enqueue(object : retrofit2.Callback<ResponseBody> {
+
+            override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
+                message.value = "failed to connect to server"
+            }
+
+            override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
+                if (response == null || !response.isSuccessful || response.body() == null || response.errorBody() != null) {
+                    message.value = "unable to obtain image from server"
                     return
                 }
 
@@ -69,19 +114,23 @@ object RetrofitObj {
                 )
             }
         })
-    }
-    fun tryGetImage() : Boolean{
 
+ */
+
+
+    }
+    fun tryGetImage(my_url:String) : Boolean{
+        val api : API by lazy  { provideRetrofit(my_url).create(API::class.java) }
         try {
             val response = api.getImageData().execute()
             if (response == null || !response.isSuccessful || response.body() == null || response.errorBody() != null) {
+
                 return false
             }
             return true
-        } catch (e:TimeoutException) {
+        } catch (t:Throwable) {
             return false
         }
-
-
     }
+
 }

@@ -18,6 +18,7 @@ import com.example.flightmobileapp.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import java.io.IOException
+import java.net.SocketTimeoutException
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,7 +26,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var my_vm:DataBaseViewModel
     private lateinit var binding: ActivityMainBinding
     private var num_of_localhosts:Int = 0
-    private var trying_to_connect:Boolean = false
+    private @Volatile var trying_to_connect:Boolean = false
+    private @Volatile var flag:Boolean = false
+
 
     override fun onStart() {
         super.onStart()
@@ -54,6 +57,11 @@ class MainActivity : AppCompatActivity() {
 
 
         ConnectButton.setOnClickListener() {
+            if (trying_to_connect) {
+                showToast("still trying to connect. wait a few seconds")
+
+                return@setOnClickListener
+            }
             val database = getSharedPreferences("database", Context.MODE_PRIVATE)
             database.edit().apply() {
                 putString("url", UrlInput.text.toString())
@@ -64,10 +72,25 @@ class MainActivity : AppCompatActivity() {
                 my_urls_data[num_of_localhosts].startTime = localhost.startTime
 
             } else {
-                my_urls_data[4].urlAdress = localhost.urlAdress
-                my_urls_data[4].startTime = localhost.startTime
+                var chanched:Boolean = false
+                for (x in 0..4){
+                    if (my_urls_data[x].urlAdress.equals(localhost.urlAdress)) {
+                        my_urls_data[x].startTime = localhost.startTime
+                        chanched = true
+                    }
+                }
+                if (!chanched) {
+                    my_urls_data[4].urlAdress = localhost.urlAdress
+                    my_urls_data[4].startTime = localhost.startTime
+                }
+
             }
-            binding.button.text = UrlInput.text.toString()
+            my_urls_data = my_urls_data.toMutableList().sortedByDescending { it.startTime }
+            binding.button.text = my_urls_data[0].urlAdress
+            binding.button2.text = my_urls_data[1].urlAdress
+            binding.button3.text = my_urls_data[2].urlAdress
+            binding.button4.text = my_urls_data[3].urlAdress
+            binding.button5.text = my_urls_data[4].urlAdress
             trying_to_connect = true
             checkIfUrlIsOk(UrlInput.text.toString())
         }
@@ -111,7 +134,12 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    var flag:Boolean = false
+
+    fun showToast(toast:String) {
+        runOnUiThread(java.lang.Runnable {
+            Toast.makeText(this, toast, Toast.LENGTH_SHORT).show()
+        })
+    }
     fun checkIfUrlIsOk(my_url:String)  {
 
         val temp = lifecycleScope.launch(Dispatchers.Default) {
@@ -127,19 +155,30 @@ class MainActivity : AppCompatActivity() {
                 //Toast.makeText(this, "worng...", Toast.LENGTH_SHORT).show()
                 trying_to_connect = false
 
-                Log.d("TAG", "failllllllll\n")
+                //Log.d("TAG", "failllllllll\n")
 
             }
 
         }
     }
     suspend fun tryGetImage(my_url: String) : Boolean {
+        //RetrofitObj.my_url = UrlInput.text.toString()
+
         return withContext(Dispatchers.IO) {
-            RetrofitObj.my_url = my_url
             try {
-                return@withContext RetrofitObj.tryGetImage()
+                val res:Boolean = RetrofitObj.tryGetImage(my_url)
+                if (!res) {
+                    showToast("something is wrong with your server")
+                }
+                return@withContext res
 
             } catch (e:IllegalArgumentException) {
+                showToast("illegal ip and port format")
+
+                return@withContext false
+            } catch (e:SocketTimeoutException) {
+                showToast("socket timeout")
+
                 return@withContext false
             }
         }
@@ -163,6 +202,8 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+
 }
 
 class insertData(val localhost: LocalHost, val application: Application) :
