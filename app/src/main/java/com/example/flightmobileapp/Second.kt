@@ -75,23 +75,16 @@ class Second : AppCompatActivity(), JoystickView.JoystickListener {
             }
         })
     }
+
     fun showToast(toast:String) {
         runOnUiThread(java.lang.Runnable {
             Toast.makeText(this, toast, Toast.LENGTH_SHORT).show()
         })
     }
+
     //Joystick movement
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onJoystickMoved(xPercent: Float, yPercent: Float, id: Int) {
-        /*
-        when (id) {
-            R.id.joystickView -> Log.d(
-                "Right Joystick",
-                "X percent: $xPercent Y percent: $yPercent"
-            )
-        }
-
-         */
         model._aileron = xPercent
         model._elevator = yPercent
         aileronNum.text = (round(xPercent * 100) / 100).toString()
