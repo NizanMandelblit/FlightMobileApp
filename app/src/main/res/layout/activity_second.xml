@@ -29,14 +29,11 @@
         android:id="@+id/viewUrl"
         android:layout_width="350dp"
         android:layout_height="69dp"
-        android:layout_marginBottom="2dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.344"
+        app:layout_constraintHorizontal_bias="0.081"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/throttleNum"
@@ -76,14 +73,14 @@
 
     <TextView
         android:id="@+id/rudderNum"
-        android:layout_width="26dp"
-        android:layout_height="29dp"
+        android:layout_width="42dp"
+        android:layout_height="35dp"
         android:ems="10"
         android:inputType="numberDecimal"
         android:text="-1"
         app:layout_constraintBaseline_toBaselineOf="@+id/rudderNameBox"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.026"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/rudderNameBox" />
 
     <TextView
@@ -116,9 +113,9 @@
         android:id="@+id/throttleNameBox"
         android:layout_width="62dp"
         android:layout_height="75dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="111dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="84dp"
         android:orientation="vertical"
         android:rotation="270"
         android:text="Throttle"
@@ -134,7 +131,8 @@
         app:layout_constraintBottom_toTopOf="@+id/joystickView"
         app:layout_constraintEnd_toStartOf="@+id/aileronNum"
         app:layout_constraintHorizontal_bias="0.859"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewUrl" />
 
     <TextView
         android:id="@+id/elevatorNameBox"
@@ -158,15 +156,16 @@
         android:layout_marginBottom="280dp"
         android:text="0"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewUrl" />
 
     <TextView
         android:id="@+id/elevatorNum"
         android:layout_width="62dp"
         android:layout_height="67dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginBottom="228dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginBottom="220dp"
         android:rotation="270"
         android:text="0"
         app:layout_constraintBottom_toBottomOf="parent"
