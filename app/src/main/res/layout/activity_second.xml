@@ -65,7 +65,7 @@
         android:on</com.example.flightmobileapp.JoystickView>
 
     <SeekBar
-        android:id="@+id/seekBar2"
+        android:id="@+id/rudderSeekBar"
         android:layout_width="256dp"
         android:layout_height="34dp"
         android:layout_marginEnd="28dp"
@@ -80,7 +80,7 @@
         android:layout_height="29dp"
         android:ems="10"
         android:inputType="numberDecimal"
-        android:text="0"
+        android:text="-1"
         app:layout_constraintBaseline_toBaselineOf="@+id/rudderNameBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.026"
@@ -98,7 +98,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <SeekBar
-        android:id="@+id/seekBar1"
+        android:id="@+id/throttleSeekBar"
         android:layout_width="220dp"
         android:layout_height="186dp"
         android:layout_gravity="center"
@@ -123,7 +123,7 @@
         android:rotation="270"
         android:text="Throttle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/seekBar1" />
+        app:layout_constraintTop_toTopOf="@+id/throttleSeekBar" />
 
     <TextView
         android:id="@+id/aileronNameBox"

@@ -7,121 +7,190 @@ import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.SyncStateContract.Helpers.insert
+import android.util.Log
 import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.example.flightmobileapp.Models.RetrofitObj
+import com.example.flightmobileapp.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
+import java.io.IOException
+import java.net.SocketTimeoutException
 
 
 class MainActivity : AppCompatActivity() {
-    private var my_urls_data: List<LocalHost>? = null
-    private var my_vm:DataBaseViewModel? = null
+    private lateinit var my_urls_data: List<LocalHost>
+    private lateinit var my_vm:DataBaseViewModel
+    private lateinit var binding: ActivityMainBinding
+    private var num_of_localhosts:Int = 0
+    private @Volatile var trying_to_connect:Boolean = false
+    private @Volatile var flag:Boolean = false
+
+
     override fun onStart() {
         super.onStart()
-        val my_vm_temp: DataBaseViewModel by lazy { ViewModelProvider(this).get(DataBaseViewModel::class.java) }
+        var is_db_done:Boolean = false
 
-        my_vm_temp.my_localhosts.observe(this, Observer<List<LocalHost>>{newval->
-            my_urls_data = newval
+
+        my_vm.my_localhosts.observe(this, Observer<List<LocalHost>>{newval->
+            //my_urls_data = newval
+            var counter:Int = 0
+            for (lh in newval) {
+                my_urls_data[counter].urlAdress = lh.urlAdress
+                my_urls_data[counter].startTime = lh.startTime
+                counter++
+            }
+            binding.button.text = my_urls_data[0].urlAdress
+            binding.button2.text = my_urls_data[1].urlAdress
+            binding.button3.text = my_urls_data[2].urlAdress
+            binding.button4.text = my_urls_data[3].urlAdress
+            binding.button5.text = my_urls_data[4].urlAdress
+            num_of_localhosts = counter
+            is_db_done = true
         })
-        my_vm = my_vm_temp
-        my_vm?.getLocalHosts(application)
+        my_vm.getLocalHosts(application)
+
 
 
 
         ConnectButton.setOnClickListener() {
+            if (trying_to_connect) {
+                showToast("still trying to connect. wait a few seconds")
+
+                return@setOnClickListener
+            }
             val database = getSharedPreferences("database", Context.MODE_PRIVATE)
             database.edit().apply() {
                 putString("url", UrlInput.text.toString())
             }.apply()
-            if (UrlInput.text.length == 0) {
-                Toast.makeText(this, "You Must Fill in A valid URL", Toast.LENGTH_SHORT).show()
+            val localhost = LocalHost(UrlInput.text.toString())
+            if (num_of_localhosts < 5) {
+                my_urls_data[num_of_localhosts].urlAdress = localhost.urlAdress
+                my_urls_data[num_of_localhosts].startTime = localhost.startTime
+
             } else {
-                val localhost = LocalHost(UrlInput.text.toString())
-                var myActualList=my_urls_data!!.toMutableList()
-                if (myActualList.size>4) {
-                    val temp1 = myActualList.get(4)
-                    myActualList.remove(temp1)
-                    for (x in 0 until 4) {
-                        val temp = myActualList.get(3)
-                        myActualList.remove(temp)
-                        myActualList.add(0, temp)
+                var chanched:Boolean = false
+                for (x in 0..4){
+                    if (my_urls_data[x].urlAdress.equals(localhost.urlAdress)) {
+                        my_urls_data[x].startTime = localhost.startTime
+                        chanched = true
                     }
                 }
-                myActualList.add(0,localhost)
-                my_urls_data=myActualList
-                Toast.makeText(this, "Connecting...", Toast.LENGTH_SHORT).show()
-                val second = Intent(this, Second::class.java)
-                startActivity(second)
+                if (!chanched) {
+                    my_urls_data[4].urlAdress = localhost.urlAdress
+                    my_urls_data[4].startTime = localhost.startTime
+                }
+
             }
+            my_urls_data = my_urls_data.toMutableList().sortedByDescending { it.startTime }
+            binding.button.text = my_urls_data[0].urlAdress
+            binding.button2.text = my_urls_data[1].urlAdress
+            binding.button3.text = my_urls_data[2].urlAdress
+            binding.button4.text = my_urls_data[3].urlAdress
+            binding.button5.text = my_urls_data[4].urlAdress
+            trying_to_connect = true
+            checkIfUrlIsOk(UrlInput.text.toString())
         }
 
+
+       // val listUrls = UrlDatabase.get(application).getDao2().getLast5()
         button.setOnClickListener() {
-            val listUrls = my_urls_data?.toList()
-            if(listUrls == null)
+            if (!is_db_done)
                 return@setOnClickListener
-            if (listUrls.size >= 1) {
-                UrlInput.setText(listUrls[0].urlAdress)
-            }
+            if (my_urls_data[0].urlAdress.equals("empty"))
+                return@setOnClickListener
+            UrlInput.setText(my_urls_data[0].urlAdress)
         }
         button2.setOnClickListener() {
-            val listUrls = my_urls_data?.toList()
-            if(listUrls == null)
+            if (!is_db_done)
                 return@setOnClickListener
-            if (listUrls.size >= 2) {
-                UrlInput.setText(listUrls[1].urlAdress)
-            }
+            if (my_urls_data[1].urlAdress.equals("empty"))
+                return@setOnClickListener
+            UrlInput.setText(my_urls_data[1].urlAdress)
         }
         button3.setOnClickListener() {
-            val listUrls = my_urls_data?.toList()
-            if(listUrls == null)
+            if (!is_db_done)
                 return@setOnClickListener
-            if (listUrls.size >= 3) {
-                UrlInput.setText(listUrls[2].urlAdress)
-            }
+            if (my_urls_data[2].urlAdress.equals("empty"))
+                return@setOnClickListener
+            UrlInput.setText(my_urls_data[2].urlAdress)
         }
         button4.setOnClickListener() {
-            val listUrls = my_urls_data?.toList()
-            if(listUrls == null)
+            if (!is_db_done)
                 return@setOnClickListener
-            if (listUrls.size >= 4) {
-                UrlInput.setText(listUrls[3].urlAdress)
-            }
+            if (my_urls_data[3].urlAdress.equals("empty"))
+                return@setOnClickListener
+            UrlInput.setText(my_urls_data[3].urlAdress)
         }
         button5.setOnClickListener() {
-           val listUrls = my_urls_data?.toList()
-            if(listUrls == null)
+            if (!is_db_done)
                 return@setOnClickListener
-            if (listUrls.size >= 5) {
-                UrlInput.setText(listUrls[4].urlAdress)
+            if (my_urls_data[4].urlAdress.equals("empty"))
+                return@setOnClickListener
+            UrlInput.setText(my_urls_data[4].urlAdress)
+        }
+
+    }
+
+    fun showToast(toast:String) {
+        runOnUiThread(java.lang.Runnable {
+            Toast.makeText(this, toast, Toast.LENGTH_SHORT).show()
+        })
+    }
+    fun checkIfUrlIsOk(my_url:String)  {
+
+        val temp = lifecycleScope.launch(Dispatchers.Default) {
+             flag =  tryGetImage(my_url)
+        }
+        temp.invokeOnCompletion {
+            if (flag) {
+                //Toast.makeText(this, "Connecting...", Toast.LENGTH_SHORT).show()
+                trying_to_connect = false
+                val second = Intent(this, Second::class.java)
+                startActivity(second)
+            } else {
+                //Toast.makeText(this, "worng...", Toast.LENGTH_SHORT).show()
+                trying_to_connect = false
+
+                //Log.d("TAG", "failllllllll\n")
+
+            }
+
+        }
+    }
+    suspend fun tryGetImage(my_url: String) : Boolean {
+        //RetrofitObj.my_url = UrlInput.text.toString()
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val res:Boolean = RetrofitObj.tryGetImage(my_url)
+                if (!res) {
+                    showToast("something is wrong with your server")
+                }
+                return@withContext res
+
+            } catch (e:IllegalArgumentException) {
+                showToast("illegal ip and port format")
+
+                return@withContext false
+            } catch (e:SocketTimeoutException) {
+                showToast("socket timeout")
+
+                return@withContext false
             }
         }
-        /*
-        var viewModelJob = Job()
-        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-        uiScope.launch {
-// this will execute under IO context
-             my_urls_data = suspendFunction()
-
-        }
-*/
     }
-
-
-    suspend fun suspendFunction(): MutableList<LocalHost>? {
-
-        withContext(Dispatchers.IO) {
-             val z = UrlDatabase.getInstance(application).functionsDatabaseDao.getLast5()
-            return@withContext z
-        }
-        return null
-    }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        my_vm =  ViewModelProvider(this).get(DataBaseViewModel::class.java)
+        my_urls_data = listOf(LocalHost("empty"), LocalHost("empty"),
+            LocalHost("empty"),LocalHost("empty"),LocalHost("empty"))
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
     }
 
@@ -133,6 +202,8 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+
 }
 
 class insertData(val localhost: LocalHost, val application: Application) :
@@ -142,9 +213,4 @@ class insertData(val localhost: LocalHost, val application: Application) :
         return null
     }
 }
-/*
-class bringData(val application: Application) : AsyncTask<Void, Void, List<LocalHost>>() {
-    override fun doInBackground(vararg params: Void?): List<LocalHost>? {
-        return UrlDatabase.getInstance(application).functionsDatabaseDao.getLast5()
-    }
-}*/
+
