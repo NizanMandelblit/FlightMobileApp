@@ -54,7 +54,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Connecting...", Toast.LENGTH_SHORT).show()
                 val second = Intent(this, Second::class.java)
                 startActivity(second)
-
             }
         }
 
