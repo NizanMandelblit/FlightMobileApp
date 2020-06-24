@@ -23,7 +23,6 @@ import java.net.SocketTimeoutException
 
 object RetrofitObj {
     private val client = OkHttpClient.Builder().connectTimeout(5, TimeUnit.SECONDS).build()
-    //@Volatile var my_url:String? = null
     private fun provideRetrofit(my_url:String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(my_url)
@@ -43,7 +42,6 @@ object RetrofitObj {
    // private val api : API by lazy  { provideRetrofit().create(API::class.java) }
 
     fun sendValsToSim(joystickModel: JoystickModel?, message:MutableLiveData<String>, my_url:String)  {
-
         val api : API by lazy  { provideRetrofit(my_url).create(API::class.java) }
             val response = api.sendSteeringData(joystickModel!!).execute()
         if (!response.isSuccessful || response.errorBody() != null) {
@@ -51,34 +49,18 @@ object RetrofitObj {
             return
         }
 
-            return
-
-
-         /*
-        api.sendSteeringData(joystickModel).enqueue(object : retrofit2.Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
-                message.value = "failed to connect to server when tried to send values"
-            }
-
-            override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
-                if (response == null || !response.isSuccessful || response.body() == null || response.errorBody() != null) {
-                    Log.d("TAG","unable to send values to server")
-
-                    message.value = "unable to send values to server"
-                    return
-                }
-                message.value = "sent"
-            }
-        })
-
-          */
-
+        return
     }
     fun getBitmapFrom(mb: MutableLiveData<Bitmap>, message:MutableLiveData<String>, my_url:String, onComplete: (Bitmap?) -> Bitmap)  {
         val api : API by lazy  { provideRetrofit(my_url).create(API::class.java) }
         val response =  api.getImageData().execute()
         if (response == null || !response.isSuccessful || response.body() == null || response.errorBody() != null) {
-            message.postValue("unable to get images from server")
+            if(response.code() == 500)
+                message.postValue("there is a problem with the simulator. status 500")
+            else if(response.code() == 502)
+                message.postValue("there was a problem with the server status 502")
+            else
+                message.postValue("there was a problem with getting the image")
             return
         }
         val bytes = response?.body()!!.bytes()
@@ -89,48 +71,15 @@ object RetrofitObj {
                 bytes.size
             )
         ))
-
-
-/*
-        api.getImageData().enqueue(object : retrofit2.Callback<ResponseBody> {
-
-            override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
-                message.value = "failed to connect to server"
-            }
-
-            override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
-                if (response == null || !response.isSuccessful || response.body() == null || response.errorBody() != null) {
-                    message.value = "unable to obtain image from server"
-                    return
-                }
-
-                val bytes = response?.body()!!.bytes()
-                mb.value = onComplete(
-                    BitmapFactory.decodeByteArray(
-                        bytes,
-                        0,
-                        bytes.size
-                    )
-                )
-            }
-        })
-
- */
-
-
     }
     fun tryGetImage(my_url:String) : Boolean{
         val api : API by lazy  { provideRetrofit(my_url).create(API::class.java) }
-        try {
-            val response = api.getImageData().execute()
-            if (response == null || !response.isSuccessful || response.body() == null || response.errorBody() != null) {
 
-                return false
-            }
-            return true
-        } catch (t:Throwable) {
+        val response = api.getImageData().execute()
+        if (response == null || !response.isSuccessful || response.body() == null || response.errorBody() != null) {
             return false
         }
+        return true
     }
 
 }

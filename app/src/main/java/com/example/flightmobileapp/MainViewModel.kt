@@ -32,9 +32,9 @@ class MainViewModel: ViewModel() {
         field = value
     }
 
-init {
-    this.context = context
-}
+    init {
+        this.context = context
+    }
 
     private var throttle:Float = 0.0F
     var _throttle:Float
@@ -127,30 +127,14 @@ init {
                 return false
             }
         }
-
     }
-    fun getscreenshot() {
-        //Toast.makeText( Context,"toast", Toast.LENGTH_SHORT).show()
 
+    fun getscreenshot() {
         viewModelScope.launch(Dispatchers.Main) {
             endlessLoop(message, joystickModel)
-            /*
-            while (true) {
-                var my_joystick:JoystickModel? = null
-               setBitmapFrom(screenshot, message)
-                if (there_is_new_val){
-                    lock.lock()
-                    there_is_new_val = false
-                    my_joystick = joystickModel
-                    lock.unlock()
-                    sendValusTosim(message, my_joystick)
-                }
-
-            }
-
-             */
         }
     }
+
     suspend fun endlessLoop(messageFromSim:MutableLiveData<String>, my_joystick:JoystickModel?) {
         return withContext(Dispatchers.IO) {
             while (true) {
@@ -167,26 +151,18 @@ init {
             }
         }
     }
+
     fun sendValusTosim(messageFromSim:MutableLiveData<String>, my_joystick:JoystickModel?) {
-
-            //Log.d("TAG", elevator.toString())
-            //RetrofitObj.my_url = my_url
             try {
-                //Log.d("TAG","unable to send values to server")
-
                 RetrofitObj.sendValsToSim(my_joystick, messageFromSim, my_url)
-
             }catch (t:Throwable) {
-
                 message.postValue(t.toString())
-
             }
 
     }
 
     fun setBitmapFrom(mm:MutableLiveData<Bitmap>, messageFromSim:MutableLiveData<String>)  {
-            //message.value = "dfsdfdf"
-            //RetrofitObj.my_url = my_url
+
             try {
                 RetrofitObj.getBitmapFrom(mm, messageFromSim, my_url  ) {
                     val bitmap: Bitmap
@@ -202,11 +178,7 @@ init {
                 }
 
             } catch (t: Throwable) {
-                message.postValue(t.toString())
-
+                message.postValue("an exception was thrown while trying to get the image")
             }
-
-
-
     }
 }

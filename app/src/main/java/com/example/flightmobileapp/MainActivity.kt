@@ -147,16 +147,11 @@ class MainActivity : AppCompatActivity() {
         }
         temp.invokeOnCompletion {
             if (flag) {
-                //Toast.makeText(this, "Connecting...", Toast.LENGTH_SHORT).show()
                 trying_to_connect = false
                 val second = Intent(this, Second::class.java)
                 startActivity(second)
             } else {
-                //Toast.makeText(this, "worng...", Toast.LENGTH_SHORT).show()
                 trying_to_connect = false
-
-                //Log.d("TAG", "failllllllll\n")
-
             }
 
         }
@@ -172,13 +167,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 return@withContext res
 
-            } catch (e:IllegalArgumentException) {
-                showToast("illegal ip and port format")
-
-                return@withContext false
-            } catch (e:SocketTimeoutException) {
-                showToast("socket timeout")
-
+            } catch (t:Throwable) {
+                showToast("an exception was thrown when trying to connect" + t.toString())
                 return@withContext false
             }
         }
